@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "1e5140d5-1f40-42f3-9173-87207d2e622f",
+		"name": "Product API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Prodoct list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/api/produk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"produk"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Prodoct store",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nama_produk",
+							"value": "Kopi Kapal Api",
+							"type": "text"
+						},
+						{
+							"key": "nama_toko_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "harga",
+							"value": "5000",
+							"type": "text"
+						},
+						{
+							"key": "stok",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "deskripsi_produk",
+							"value": "Kopi Itam Kupu kupu",
+							"type": "text"
+						},
+						{
+							"key": "thumbnail",
+							"type": "file",
+							"src": "/C:/Users/FAJAR/Downloads/qda.jpg"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/produk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"produk"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
