@@ -32,4 +32,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     //toko
     Route::resource('toko', TokoController::class);
+    Route::post('toko/{id}', [TokoController::class, 'update']);
 });

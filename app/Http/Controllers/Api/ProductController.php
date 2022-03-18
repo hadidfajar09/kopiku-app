@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Produk;
+use Carbon\Carbon;
+use Storage;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,9 +15,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Produk::getProduk()->paginate(10);
+        $filterKey = $request->get('keyword');
+        $data = Produk::getProduk()->paginate(5);
+
+        if ($filterKey) {
+            $data = Produk::where('nama_produk', 'LIKE', "%$filterKey%")->get();
+        }
 
         return response()->json($data);
     }
@@ -46,6 +53,7 @@ class ProductController extends Controller
             'deskripsi_produk' => 'required',
             'thumbnail' => 'required|file|mimes:png,jpg,jpeg',
             'multiple_img' => '',
+            'created_at' => Carbon::now()
         ]);
 
         try {
@@ -55,7 +63,7 @@ class ProductController extends Controller
             $response = Produk::create($validasi);
             return response()->json([
                 'success' => true,
-                'message' => 'sukses',
+                'message' => 'sukses nambah produk',
                 'data' => $response
             ]);
         } catch (\Exception $e) {
@@ -75,6 +83,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
+        $data = Produk::find($id);
+
+        return response()->json($data);
     }
 
     /**
@@ -85,9 +96,6 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data = Produk::find($id);
-
-        return response()->json($data);
     }
 
     /**
@@ -107,20 +115,23 @@ class ProductController extends Controller
             'deskripsi_produk' => 'required',
             'thumbnail' => 'file|mimes:png,jpg,jpeg',
             'multiple_img' => '',
+            'created_at' => Carbon::now()
         ]);
 
         try {
+            $response = Produk::find($id);
             if ($request->file('thumbnail')) {
+                Storage::disk('public')->delete($response->thumbnail);
                 $fileName = time() . $request->file('thumbnail')->getClientOriginalName();
                 $path = $request->file('thumbnail')->storeAs('uploads/produk', $fileName);
                 $validasi['thumbnail'] = $path;
             }
 
-            $response = Produk::find($id);
+
             $response->update($validasi);
             return response()->json([
                 'success' => true,
-                'message' => 'sukses',
+                'message' => 'sukses nambah produk',
                 'data' => $response
             ]);
         } catch (\Exception $e) {
@@ -142,6 +153,7 @@ class ProductController extends Controller
     {
         try {
             $produk = Produk::find($id);
+            Storage::disk('public')->delete($produk->thumbnail);
             $produk->delete();
 
             return response()->json([

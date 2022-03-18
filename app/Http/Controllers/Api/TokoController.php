@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Toko;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TokoController extends Controller
 {
@@ -13,9 +14,14 @@ class TokoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filterKey = $request->get('keyword');
         $data = Toko::paginate(10);
+
+        if ($filterKey) {
+            $data = Toko::where('nama_toko', 'LIKE', "%$filterKey%")->get();
+        }
 
         return response()->json($data);
     }
@@ -38,7 +44,28 @@ class TokoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasi = $request->validate([
+            'nama_toko' => 'required',
+            'alamat' => 'required',
+            'deskripsi' => 'required',
+            'created_at' => Carbon::now()
+        ]);
+
+        try {
+
+            $response = Toko::create($validasi);
+            return response()->json([
+                'success' => true,
+                'message' => 'sukses nambah toko',
+                'data' => $response
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Kesalahan',
+                'errors' => $e->getMessage()
+
+            ]);
+        }
     }
 
     /**
@@ -72,7 +99,28 @@ class TokoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validasi = $request->validate([
+            'nama_toko' => 'required',
+            'alamat' => 'required',
+            'deskripsi' => 'required',
+            'created_at' => Carbon::now()
+        ]);
+
+        try {
+            $response = Toko::find($id);
+            $response->update($validasi);
+            return response()->json([
+                'success' => true,
+                'message' => 'sukses update toko',
+                'data' => $response
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Kesalahan',
+                'errors' => $e->getMessage()
+
+            ]);
+        }
     }
 
     /**
@@ -83,6 +131,21 @@ class TokoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $toko = Toko::find($id);
+            $toko->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'sukses menghapus toko',
+                'data' => $toko
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Kesalahan',
+                'errors' => $e->getMessage()
+
+            ]);
+        }
     }
 }
