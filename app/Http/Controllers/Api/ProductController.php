@@ -75,7 +75,6 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -86,7 +85,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Produk::find($id);
+
+        return response()->json($data);
     }
 
     /**
@@ -98,7 +99,37 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validasi = $request->validate([
+            'nama_produk' => 'required',
+            'nama_toko_id' => 'required',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'deskripsi_produk' => 'required',
+            'thumbnail' => 'file|mimes:png,jpg,jpeg',
+            'multiple_img' => '',
+        ]);
+
+        try {
+            if ($request->file('thumbnail')) {
+                $fileName = time() . $request->file('thumbnail')->getClientOriginalName();
+                $path = $request->file('thumbnail')->storeAs('uploads/produk', $fileName);
+                $validasi['thumbnail'] = $path;
+            }
+
+            $response = Produk::find($id);
+            $response->update($validasi);
+            return response()->json([
+                'success' => true,
+                'message' => 'sukses',
+                'data' => $response
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Kesalahan',
+                'errors' => $e->getMessage()
+
+            ]);
+        }
     }
 
     /**
@@ -109,6 +140,21 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $produk = Produk::find($id);
+            $produk->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'sukses',
+                'data' => $produk
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Kesalahan',
+                'errors' => $e->getMessage()
+
+            ]);
+        }
     }
 }
