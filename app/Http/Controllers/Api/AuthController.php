@@ -9,6 +9,29 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    public function register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password'])
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Akun ditambahkan',
+            'data' => $user
+
+        ], 201);
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -32,6 +55,17 @@ class AuthController extends Controller
             'message' => 'DIkenali',
             'token' => $token,
             'user' => $user
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        auth()->user()->tokens()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil Logout',
+
         ], 200);
     }
 }

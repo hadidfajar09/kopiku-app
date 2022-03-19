@@ -21,7 +21,7 @@ class ProductController extends Controller
         $data = Produk::getProduk()->paginate(5);
 
         if ($filterKey) {
-            $data = Produk::where('nama_produk', 'LIKE', "%$filterKey%")->get();
+            $data = Produk::getProduk()->where('nama_produk', 'LIKE', "%$filterKey%")->paginate(5);
         }
 
         return response()->json($data);
@@ -168,5 +168,24 @@ class ProductController extends Controller
 
             ]);
         }
+    }
+
+    function getByToko(Request $request)
+    {
+        $id = $request->input('nama_toko_id');
+        $produk = Produk::where([
+            ['nama_toko_id', $id]
+        ])->get();
+        if ($produk->isEmpty()) {
+            return response()->json([
+                'status' => FALSE,
+                'msg' => 'Produk tidak ditemukan dengan kategori tersebut'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => true,
+            'msg' => $produk
+        ]);
     }
 }

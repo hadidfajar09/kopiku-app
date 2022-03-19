@@ -22,15 +22,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //login
+Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
+
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     //produk
     Route::resource('produk', ProductController::class);
     Route::post('produk/{id}', [ProductController::class, 'update']);
+    Route::post('produk-by-toko', [ProductController::class, 'getByToko']);
 
 
     //toko
     Route::resource('toko', TokoController::class);
     Route::post('toko/{id}', [TokoController::class, 'update']);
+
+    //logout
+    Route::post('user/logout', [AuthController::class, 'logout']);
 });
