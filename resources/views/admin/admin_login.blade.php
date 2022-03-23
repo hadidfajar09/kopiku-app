@@ -62,7 +62,7 @@
                     </center>
 
 
-                    <form action="{{ route('login') }}" class="d-block" method="post">
+                    <form action="{{ route('admin.login') }}" class="d-block" method="post">
                         @csrf
 
                         <div class="form-group icon_parent">
