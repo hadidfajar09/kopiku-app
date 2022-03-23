@@ -19,8 +19,8 @@
         @endif
 
 
-  {{-- <h4>Login Admin Name : {{ Auth::guard('admin')->user()->name }} </h4>
-<h4>Login Admin Email : {{ Auth::guard('admin')->user()->email }} </h4> --}}
+  <h4>Login Admin Name : {{ Auth::guard('admin')->user()->name }} </h4>
+<h4>Login Admin Email : {{ Auth::guard('admin')->user()->email }} </h4>
 
     <div class="middle_content_wrapper">
         <!-- counter_area -->

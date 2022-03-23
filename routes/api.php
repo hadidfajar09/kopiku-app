@@ -26,16 +26,28 @@ Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
 
 
+//produk
+Route::get('produk', [ProductController::class, 'index']);
+Route::get('produk/{id}', [ProductController::class, 'show']);
+
+//toko
+Route::get('toko', [TokoController::class, 'index']);
+Route::get('toko/{id}', [TokoController::class, 'show']);
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    //produk
-    Route::resource('produk', ProductController::class);
+    // Route::resource('produk', ProductController::class);
+    Route::post('produk', [ProductController::class, 'store']);
     Route::post('produk/{id}', [ProductController::class, 'update']);
+    Route::delete('produk/{id}', [ProductController::class, 'destroy']);
     Route::post('produk-by-toko', [ProductController::class, 'getByToko']);
 
 
+
+
     //toko
-    Route::resource('toko', TokoController::class);
+    Route::post('toko', [TokoController::class, 'store']);
     Route::post('toko/{id}', [TokoController::class, 'update']);
+    Route::delete('toko/{id}', [TokoController::class, 'destroy']);
 
     //logout
     Route::post('user/logout', [AuthController::class, 'logout']);

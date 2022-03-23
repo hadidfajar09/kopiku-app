@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Toko;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TokoController extends Controller
 {
@@ -76,7 +77,14 @@ class TokoController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Toko::find($id);
+
+        $produk = DB::table('produks')->where('nama_toko_id', $id)->get();
+
+        return response()->json([
+            'toko' => $data,
+            'produk' => $produk
+        ]);
     }
 
     /**
