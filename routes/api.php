@@ -49,6 +49,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('toko/{id}', [TokoController::class, 'update']);
     Route::delete('toko/{id}', [TokoController::class, 'destroy']);
 
+    //user
+    Route::get('user', [AuthController::class, 'getUser']);
+
+
     //logout
     Route::post('user/logout', [AuthController::class, 'logout']);
 });

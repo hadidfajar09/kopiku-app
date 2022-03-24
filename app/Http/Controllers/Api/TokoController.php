@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isEmpty;
+
 class TokoController extends Controller
 {
     /**
@@ -80,6 +82,13 @@ class TokoController extends Controller
         $data = Toko::find($id);
 
         $produk = DB::table('produks')->where('nama_toko_id', $id)->get();
+
+        if ($data === NULL) {
+            return response()->json([
+                'message' => 'Tidak ditemukan'
+            ]);
+        }
+
 
         return response()->json([
             'toko' => $data,

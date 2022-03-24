@@ -21,6 +21,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminController::class, 'index'])->name('form.login');
     Route::post('/login/bos', [AdminController::class, 'login'])->name('admin.login');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('admin');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });
 
 
