@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TokoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,18 +24,23 @@ Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('admin');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });
-
+ 
 
 
 //END ROUTE
 
 
 Route::get('/', function () {
-    return view('backend.admin_login');
+    return view('admin.admin_login');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::group(['middleware' => 'admin'], function(){
+    Route::get('admin/toko/data', [TokoController::class, 'data'])->name('toko.data');
+    Route::resource('admin/toko',TokoController::class);
+});
 
 require __DIR__ . '/auth.php';

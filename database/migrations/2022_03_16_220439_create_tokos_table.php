@@ -18,6 +18,7 @@ class CreateTokosTable extends Migration
             $table->string('nama_toko');
             $table->text('alamat');
             $table->text('deskripsi');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

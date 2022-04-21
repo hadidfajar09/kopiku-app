@@ -11,6 +11,6 @@ class Toko extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama_toko', 'alamat', 'deskripsi'
+        'nama_toko', 'alamat', 'deskripsi', 'image',
     ];
 }

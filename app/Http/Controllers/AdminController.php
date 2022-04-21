@@ -14,7 +14,7 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.index');
+        return view('layouts.home');
     }
     public function login(Request $request)
     {
@@ -30,5 +30,11 @@ class AdminController extends Controller
 
 
         
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('form.login');
     }
 }

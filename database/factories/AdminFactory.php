@@ -23,10 +23,10 @@ class AdminFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'Admin',
-            'email' => $this->faker->unique()->safeEmail(),
+            'name' => 'Zeronine',
+            'email' => 'zeronine09@gmail.com',
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$tm/3j9x/dXqUcDcbZlbCJ.ZoO8OBKHrkC/ghG0dysqpVihFevNNp.', // hadidfajar09
             // 'remember_token' => Str::random(10),
         ];
     }

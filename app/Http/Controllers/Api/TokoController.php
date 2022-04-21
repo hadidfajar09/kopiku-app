@@ -51,11 +51,16 @@ class TokoController extends Controller
             'nama_toko' => 'required',
             'alamat' => 'required',
             'deskripsi' => 'required',
+            'image' => 'sometimes|file|mimes:png,jpg,jpeg',
             'created_at' => Carbon::now()
         ]);
 
         try {
-
+            $image = $request->file('image');
+            $fileName = time() . $image->getClientOriginalName();
+            $path = $image->storeAs('uploads/toko', $fileName);
+            $validasi['image'] = $path;
+            
             $response = Toko::create($validasi);
             return response()->json([
                 'success' => true,
@@ -120,11 +125,18 @@ class TokoController extends Controller
             'nama_toko' => 'required',
             'alamat' => 'required',
             'deskripsi' => 'required',
+            'image' => 'sometimes|file|mimes:png,jpg,jpeg',
             'created_at' => Carbon::now()
         ]);
 
         try {
             $response = Toko::find($id);
+            if ($image = $request->file('image')) {
+            
+            $fileName = time() . $image->getClientOriginalName();
+            $path = $image->storeAs('uploads/toko', $fileName);
+            $validasi['image'] = $path;
+            }
             $response->update($validasi);
             return response()->json([
                 'success' => true,
