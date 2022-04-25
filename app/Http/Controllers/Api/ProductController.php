@@ -7,6 +7,7 @@ use App\Models\Produk;
 use Carbon\Carbon;
 use Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -18,14 +19,60 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        // $filterKey = $request->get('keyword');
+        // $data = Produk::getProduk()->paginate(5);
+
+        // if ($filterKey) {
+        //     $data = Produk::getProduk()->where('nama_produk', 'LIKE', "%$filterKey%")->paginate(5);
+        // }
+
+        // return response()->json($data);
+
+        //Query
+        $id = $request->input('nama_toko_id');
+        $produk = DB::table('produks')->where([
+            ['nama_toko_id', $id]
+        ])
+        ->join('tokos', 'produks.nama_toko_id', 'tokos.id')
+        // ->join('subcategories', 'produks.subnama_toko_id', 'subcategories.id')
+        ->select('produks.*', 'tokos.nama_toko', 'tokos.image')
+        ->orderBy('id','desc')->paginate(20);
+
         $filterKey = $request->get('keyword');
-        $data = Produk::getProduk()->paginate(5);
+        
 
         if ($filterKey) {
-            $data = Produk::getProduk()->where('nama_produk', 'LIKE', "%$filterKey%")->paginate(5);
+            $key = DB::table('produks')->where('nama_produk', 'LIKE', "%$filterKey%")
+            ->join('tokos', 'produks.nama_toko_id', 'tokos.id')
+            // ->join('subcategories', 'produks.subnama_toko_id', 'subcategories.id')
+            ->select('produks.*', 'tokos.nama_toko', 'tokos.image')
+            ->orderBy('id','desc')->paginate(20);
+            return response()->json([
+                'status' => 'ok',
+                'reply' => 'List ditemmukan',
+                'totalNews' => DB::table('produks')->count(),
+                'totalResults' => $key->count(),
+                'articles' => $key
+            ], 200);
         }
 
-        return response()->json($data);
+        
+
+        if ($produk->isEmpty()) {
+            return response()->json([
+                'status' => 'kosong',
+                'reply' => 'Produk tidak ditemukan dengan kategori tersebut'
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'ok',
+                'reply' => 'List ditemmukan',
+                'totalNews' => DB::table('produks')->count(),
+                'totalResults' => $produk->count(),
+                'articles' => $produk
+                
+            ], 200);
+        }
     }
 
     /**
