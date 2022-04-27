@@ -17,6 +17,17 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function getAllProduk(Request $request)
+    {
+        $filterKey = $request->get('keyword');
+        $data = Produk::paginate(10);
+
+        if ($filterKey) {
+            $data = Produk::where('nama_produk', 'LIKE', "%$filterKey%")->get();
+        }
+
+        return response()->json($data);
+    }
     public function index(Request $request)
     {
         // $filterKey = $request->get('keyword');
@@ -50,9 +61,9 @@ class ProductController extends Controller
             return response()->json([
                 'status' => 'ok',
                 'reply' => 'List ditemmukan',
-                'totalNews' => DB::table('produks')->count(),
+                'totalProduk' => DB::table('produks')->count(),
                 'totalResults' => $key->count(),
-                'articles' => $key
+                'produks' => $key
             ], 200);
         }
 
@@ -67,9 +78,9 @@ class ProductController extends Controller
             return response()->json([
                 'status' => 'ok',
                 'reply' => 'List ditemmukan',
-                'totalNews' => DB::table('produks')->count(),
+                'totalProduk' => DB::table('produks')->count(),
                 'totalResults' => $produk->count(),
-                'articles' => $produk
+                'produks' => $produk
                 
             ], 200);
         }
@@ -84,6 +95,7 @@ class ProductController extends Controller
     {
         //
     }
+    
 
     /**
      * Store a newly created resource in storage.

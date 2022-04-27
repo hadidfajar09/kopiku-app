@@ -28,6 +28,7 @@ Route::post('user/login', [AuthController::class, 'login']);
 
 //produk
 Route::get('produk', [ProductController::class, 'index']);
+Route::get('produk/all', [ProductController::class, 'getAllProduk']);
 Route::get('produk/{id}', [ProductController::class, 'show']);
 
 //toko
@@ -40,9 +41,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('produk/{id}', [ProductController::class, 'update']);
     Route::delete('produk/{id}', [ProductController::class, 'destroy']);
     Route::post('produk-by-toko', [ProductController::class, 'getByToko']);
-
-
-
 
     //toko
     Route::post('toko', [TokoController::class, 'store']);
