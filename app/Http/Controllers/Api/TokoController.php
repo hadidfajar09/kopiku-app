@@ -20,7 +20,7 @@ class TokoController extends Controller
     public function index(Request $request)
     {
         $filterKey = $request->get('keyword');
-        $data = Toko::paginate(10);
+        $data = Toko::paginate(5);
 
         if ($filterKey) {
             $data = Toko::where('nama_toko', 'LIKE', "%$filterKey%")->get();
@@ -86,7 +86,7 @@ class TokoController extends Controller
     {
         $data = Toko::find($id);
 
-        $produk = DB::table('produks')->where('nama_toko_id', $id)->get();
+        $produk = DB::table('produks')->where('nama_toko_id', $id)->paginate(5);
 
         if ($data === NULL) {
             return response()->json([

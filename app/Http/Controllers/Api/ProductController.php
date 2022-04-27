@@ -20,10 +20,10 @@ class ProductController extends Controller
     public function getAllProduk(Request $request)
     {
         $filterKey = $request->get('keyword');
-        $data = Produk::paginate(10);
+        $data = Produk::paginate(5);
 
         if ($filterKey) {
-            $data = Produk::where('nama_produk', 'LIKE', "%$filterKey%")->get();
+            $data = Produk::where('nama_produk', 'LIKE', "%$filterKey%")->paginate(5);
         }
 
         return response()->json($data);
@@ -235,7 +235,7 @@ class ProductController extends Controller
         $id = $request->input('nama_toko_id');
         $produk = Produk::where([
             ['nama_toko_id', $id]
-        ])->get();
+        ])->paginate(5);
         if ($produk->isEmpty()) {
             return response()->json([
                 'status' => FALSE,
